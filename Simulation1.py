@@ -39,8 +39,9 @@ for i in range(rounds) :
 
     if doors[swap_to] == "car":
         wins += 1
-        print ("You won the car!!")
+        print("You won the car!!")
     else:
-        print ("Sorry, but you're stuck with a goat")
+        print("Sorry, but you're stuck with a goat")
 
-print ("You played", rounds, "rounds, and won", wins, "of them!")
+print("You played", rounds, "rounds, and won", wins, "of them!")
+
