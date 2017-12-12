@@ -5,44 +5,32 @@
 import argparse, random
 
 def simulate(num_doors, switch,num_car,num_open):
-    """(int, bool): bool
-
-    Carry out the game for one contestant.  If 'switch' is True,
-    the contestant will switch their chosen door when offered the chance.
-    Returns a Boolean value telling whether the simulated contestant won.
+    """(int, bool,int): bool
+    Simulate the game for one contestant.  Given the number of doors in total and the number of doors Monty
+    opens, the contestant can choose whether to switch. Returns a Boolean value telling whether the
+    simulated contestant won.
     """
 
     # Doors are numbered from 0 up to num_doors-1 (inclusive).
-    # Randomly choose the doors hiding the prize.
+    # Randomly choose the doors hiding the car.
     winning_door = random.sample(list(range(num_doors)), num_car)
-    # The contestant picks a random door, too.
+
+    # The contestant picks a random door.
     choice = random.randint(0, num_doors-1)
 
     # The host opens num_open doors from the rest doors.
     closed_doors = list(range(num_doors))
     monty_doors=[x for x in closed_doors if x not in winning_door and x != choice]
-
     monty_choice=random.sample(monty_doors,num_open)
-
-
-    #while True:
-        # Monty randomly choose doors to open.
-     #   door_to_remove = random.choice(closed_doors)
-      #  if door_to_remove not in winning_door and door_to_remove !=choice:
-       #     break
-
 
     # Remove the door from the list of closed doors.
     for i in monty_choice:
         closed_doors.remove(i)
 
-    # Does the contestant want to switch their choice?
+    # If switch, the contestant chooses from the closed doors
     if switch:
-        # The contestant will choose from the remaining doors
-        available_doors = list(closed_doors) # Make a copy of the list.
-        available_doors.remove(choice)
-        choice = random.choice(available_doors)
-
+        closed_doors.remove(choice)
+        choice = random.choice(closed_doors)
 
     # Did the contestant win?
     won = (choice in winning_door)
@@ -75,13 +63,12 @@ def main():
     winning_non_switchers = 0
     winning_switchers = 0
     for i in range(args.trials):
-        # First, do a trial where the contestant never switches.
-
+        # simulate not switching.
         won = simulate(args.doors,False,args.cars,args.open)
         if won:
             winning_non_switchers += 1
 
-        # Next, try one where the contestant switches.
+        # simulate switching.
         won = simulate(args.doors, True,args.cars,args.open)
         if won:
             winning_switchers += 1
